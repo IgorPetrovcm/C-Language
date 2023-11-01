@@ -2,29 +2,30 @@
 int main() 
 {
     int arrSize = rand()%11;
-    int countSortedValues = 0;
+    int countSortedValues = 0; 
 
-    int arrSorted[arrSize] = function(arrSize, &countSortedValues);
+    int *arr = function(arrSize, &countSortedValues);
+
     for (int i = 0; i < countSortedValues; i++) {
-        printf("%d ",arrSorted[i]);
+        printf("%d ",arr[i]);
     }
 
 }
 
-int function(int size, int *count) 
+int* function(int size, int *count) 
 {
     int arrNonSorted[size];
-    int arrSorted[size];
-
+    int arr[size];
     for (int i = 0; i < size; i++) 
-    {
+    {        
         arrNonSorted[i] = (rand()%11) + (-3);
-        printf("%d",arrNonSorted[i]);
+        printf("%d ",arrNonSorted[i]);
 
-        if (arrNonsorted[i] >= 0) {
-            arrSorted[count] = arrNonSorted[i];
-            count++;
-        }        
+        if (arrNonSorted[i] >= 0) {
+            arr[*count] = arrNonSorted[i];
+            *count++;
+        } 
     }
-    return arrSorted;
+    return arr;       
+
 }
