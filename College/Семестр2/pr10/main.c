@@ -56,13 +56,31 @@ int main()
 
     node_with_student* current_node = nodes->head;
 
-    printf("Last Name\tFirst Name\tAge\tGender\tGroup\tMath\tPhysics\tChemistry");
+    int size_sorted_nodes = sizeof(node_with_student);
+
+    node_list* sorted_nodes = (node_list*) malloc(size_sorted_nodes);
+
+    while (current_node->next != NULL){
+        if (current_node->value.gender == 1 && current_node->value.assessment_by_chemistry == 5){
+            add_node(sorted_nodes, &current_node->value);
+
+            size_sorted_nodes += sizeof(node_with_student);
+
+            realloc(sorted_nodes, size_sorted_nodes);
+        }
+
+        current_node = current_node->next;
+    } 
+
+    current_node = sorted_nodes->head;
+
+    printf("Last Name\tFirst Name\tAge\tGender\tGroup\tMath\tPhysics\tChemistry\n");
 
     while (current_node->next != NULL)
     {   
-        print_word(current_node->value.last_name);
+        print_word(current_node->value.last_name); printf("\t");
 
-        print_word(current_node->value.first_name);
+        print_word(current_node->value.first_name); printf("\t");
 
         printf("%d\t", current_node->value.age);
 
@@ -79,7 +97,7 @@ int main()
 
         printf("%c%c\t", *gender_print_v, *(gender_print_v + 1));
 
-        print_word(current_node->value.group);
+        print_word(current_node->value.group); printf("\t");
 
         printf("%d\t", current_node->value.assessment_by_math);
 
@@ -112,6 +130,4 @@ void print_word(char* begin_word)
         printf("%c", *begin_word);
         begin_word++;
     }
-
-    printf("\t");
 }
