@@ -1,7 +1,19 @@
 # include "student.h"
 # include "binary_tree.h"
+# include "node_list_for_students.h"
 # include <stdio.h>
 # include <stdlib.h>
+
+void print_word2(char* begin_word)
+{
+    while (*begin_word != 0)
+    {
+        printf("%c", *begin_word);
+        begin_word++;
+    }
+
+    printf("\n");
+}
 
 void add_node(tree* tree, struct student* value)
 {
@@ -10,76 +22,90 @@ void add_node(tree* tree, struct student* value)
     new_node->value = value;
     
     if (tree->head == NULL){
-        tree->head = new_node;
+        tree->head = (tree_node*)malloc(sizeof(tree_node));
 
-        tree->count++;
+        tree->head->left = (tree_node**)malloc(sizeof(tree_node));
+        tree->head->right = (tree_node**)malloc(sizeof(tree_node));
+
+        *tree->head->left = NULL;
+        *tree->head->right = NULL;
+
+        tree->head->value = new_node->value;
     }
-    else if (value->assessment_by_chemistry> tree->head->value->assessment_by_chemistry){
-        tree->head->right = adding_node(tree->head->right, new_node);
+    else if (value->assessment_by_chemistry > tree->head->value->assessment_by_chemistry){
+        adding_node(tree->head->right, new_node);
     }
     else {
-        tree->head->left = adding_node(tree->head->left, new_node);
+        adding_node(tree->head->left, new_node);
     }
 
     tree->count++;
 }
 
-tree_node* adding_node(tree_node* current_node, tree_node* node)
+void adding_node(tree_node** current_node, tree_node* node)
 {
-    if (current_node == NULL){
-        current_node = node;
+    tree_node* values_for_node = *current_node;
+
+    if (values_for_node == NULL){
+
+        values_for_node = (tree_node*)malloc(sizeof(tree_node)) ;
+
+        values_for_node->right = (tree_node**)malloc(sizeof(tree_node));
+        values_for_node->left = (tree_node**)malloc(sizeof(tree_node));
+
+        values_for_node->right = NULL;
+        values_for_node->left = NULL;
+
+        values_for_node->value = node->value;
     }
-    else if (node->value->assessment_by_chemistry > current_node->value->assessment_by_chemistry){
-        current_node->right = adding_node(current_node->right, node);
+    else if (node->value->assessment_by_chemistry > values_for_node->value->assessment_by_chemistry){
+        adding_node(values_for_node->right, node);
     }
     else {
-        current_node->left = adding_node(current_node->left, node);
+        adding_node(values_for_node->left, node);
     }
-    return current_node;
 }
 
-struct student* get_students(tree* tree)
-{
+node_list* get_students(tree* tree)
+{   
     if (tree->head == NULL){
         return NULL; 
     }
 
-    int size_result = sizeof(struct student);
+    node_list result = {.head = NULL, .tail = NULL};
+    node_list* nodes = &result; 
 
-    struct student* result = (struct student*)malloc(size_result);
+    add_node_in_list(nodes, tree->head->value);
 
-    *result = *tree->head->value;
+    print_word2(tree->head->value->last_name);
 
-    size_result += sizeof(struct student);
+    geting_students(nodes, tree->head->left);
 
-    realloc(result, size_result);
+    geting_students(nodes, tree->head->right);
 
-    result++;
-
-    size_result = geting_students(&result, size_result, tree->head->left);
-
-    size_result = geting_students(&result, size_result, tree->head->right);
-
-    return result;
+    return nodes;
 }
 
-int geting_students(struct student** students, int size_students, tree_node* node)
+void geting_students(node_list* students, tree_node** node)
 {
-    if (node == NULL){
-        return size_students;
+    if (*node == NULL){
+        return;
     }
 
-    *students = node->value;
+    tree_node* values_for_node = *node;
+    printf("f");
 
-    size_students += sizeof(struct student);
+    printf("%p", (void*)values_for_node->value);
 
-    realloc(*students, size_students);
+    print_word2(values_for_node->value->last_name);
 
-    *students++;
+    printf("f");
 
-    size_students = geting_students(&*students, size_students, node->left); 
+    add_node_in_list(students, values_for_node->value);
 
-    size_students = geting_students(&*students, size_students, node->right); 
+    geting_students(students, values_for_node->left); 
 
-    return size_students;
+    geting_students(students, values_for_node->right); 
+
+    return;
 }

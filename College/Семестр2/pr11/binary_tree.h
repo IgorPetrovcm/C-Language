@@ -2,11 +2,12 @@
 # define BINARY_TREE_H
 
 # include "student.h"
+# include "node_list_for_students.h"
 
 typedef struct tree_node {
     struct student* value;
-    struct tree_node* left;
-    struct tree_node* right;
+    struct tree_node** left;
+    struct tree_node** right;
 } tree_node;
 
 typedef struct tree{
@@ -16,14 +17,10 @@ typedef struct tree{
 
 void add_node(tree* tree, struct student* value);
 
-tree_node* adding_node(tree_node* node, tree_node* value);
+void adding_node(tree_node** node, tree_node* value);
 
-char remove_node(tree* tree, tree_node* node);
+node_list* get_students(tree* tree);
 
-char removing_node(tree_node* tree, tree_node* node);
-
-struct student* get_students(tree* tree);
-
-int geting_students(struct student** students, int size_students, tree_node* node);
+void geting_students(node_list* students, tree_node** node);
 
 # endif
