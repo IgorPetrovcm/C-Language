@@ -1,0 +1,3 @@
+C:/Users/Honor/Desktop/Programming/C-Language/College/Semestr2/pr11-h/cmake-build-debug/CMakeFiles/pr11_h.dir
+C:/Users/Honor/Desktop/Programming/C-Language/College/Semestr2/pr11-h/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Honor/Desktop/Programming/C-Language/College/Semestr2/pr11-h/cmake-build-debug/CMakeFiles/rebuild_cache.dir
