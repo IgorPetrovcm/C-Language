@@ -4,17 +4,6 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-void print_word2(char* begin_word)
-{
-    while (*begin_word != 0)
-    {
-        printf("%c", *begin_word);
-        begin_word++;
-    }
-
-    printf("\n");
-}
-
 void add_node(tree* tree, struct student* value)
 {
     tree_node* new_node = (tree_node*)malloc(sizeof(tree_node));
@@ -44,25 +33,23 @@ void add_node(tree* tree, struct student* value)
 
 void adding_node(tree_node** current_node, tree_node* node)
 {
-    tree_node* values_for_node = *current_node;
+    if ((*current_node) == NULL){
 
-    if (values_for_node == NULL){
+        *current_node = (tree_node*)malloc(sizeof(tree_node)) ;
 
-        values_for_node = (tree_node*)malloc(sizeof(tree_node)) ;
+        (*current_node)->right = (tree_node**)malloc(sizeof(tree_node));
+        (*current_node)->left = (tree_node**)malloc(sizeof(tree_node));
 
-        values_for_node->right = (tree_node**)malloc(sizeof(tree_node));
-        values_for_node->left = (tree_node**)malloc(sizeof(tree_node));
+        *(*current_node)->right = NULL;
+        *(*current_node)->left = NULL;
 
-        values_for_node->right = NULL;
-        values_for_node->left = NULL;
-
-        values_for_node->value = node->value;
+        (*current_node)->value = node->value;
     }
-    else if (node->value->assessment_by_chemistry > values_for_node->value->assessment_by_chemistry){
-        adding_node(values_for_node->right, node);
+    else if (node->value->assessment_by_chemistry > (*current_node)->value->assessment_by_chemistry){
+        adding_node((*current_node)->right, node);
     }
     else {
-        adding_node(values_for_node->left, node);
+        adding_node((*current_node)->left, node);
     }
 }
 
@@ -76,8 +63,6 @@ node_list* get_students(tree* tree)
     node_list* nodes = &result; 
 
     add_node_in_list(nodes, tree->head->value);
-
-    print_word2(tree->head->value->last_name);
 
     geting_students(nodes, tree->head->left);
 
@@ -93,13 +78,6 @@ void geting_students(node_list* students, tree_node** node)
     }
 
     tree_node* values_for_node = *node;
-    printf("f");
-
-    printf("%p", (void*)values_for_node->value);
-
-    print_word2(values_for_node->value->last_name);
-
-    printf("f");
 
     add_node_in_list(students, values_for_node->value);
 
