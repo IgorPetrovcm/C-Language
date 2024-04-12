@@ -1,0 +1,9 @@
+# ninja log v5
+15	332	7346485654742973	CMakeFiles/pr11_g.dir/node_list_for_students.c.obj	5794a2d6df8716f
+24	386	7346485655301369	CMakeFiles/pr11_g.dir/binary_tree.c.obj	298a19f97ac36d92
+4	388	7346485655321452	CMakeFiles/pr11_g.dir/main.c.obj	e1dfcba7d52e1a29
+388	813	7346485659479677	pr11_g.exe	93e3e15b0dc750b6
+8	636	7346489701684474	CMakeFiles/pr11_g.dir/binary_tree.c.obj	298a19f97ac36d92
+637	1086	7346489706095148	pr11_g.exe	93e3e15b0dc750b6
+31	227	7346489938772303	CMakeFiles/pr11_g.dir/binary_tree.c.obj	298a19f97ac36d92
+228	457	7346489940963035	pr11_g.exe	93e3e15b0dc750b6
