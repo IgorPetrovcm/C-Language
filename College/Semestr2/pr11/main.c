@@ -38,21 +38,26 @@ int main()
 
         new_student->age = 12 + rand() % 7;
 
-        new_student->gender = (char)rand() % 2;
+        char gen = (char)rand() % 2;
+        if (gen < 0){
+            gen = 0;
+        }
+
+        new_student->gender = gen;
 
         new_student->group = &groups_list[rand() % 6];
 
-        new_student->assessment_by_chemistry = (char)2 + rand() % 6;
+        new_student->assessment_by_chemistry = (char)2 + rand() % 4;
 
-        new_student->assessment_by_math = (char)2 + rand() % 6;
+        new_student->assessment_by_math = (char)2 + rand() % 4;
 
-        new_student->assessment_by_physics = (char)2 + rand() % 6;
+        new_student->assessment_by_physics = (char)2 + rand() % 4;
 
         add_node(&tree, new_student);
 
     }
 
-    node_list* list_res = get_students(&tree);
+    node_list* list_res = get_students_with_fields_for_task(&tree);
 
     node_with_student* current_node = list_res->head;
     
@@ -65,18 +70,20 @@ int main()
 
         printf("%d\t", current_node->value.age);
 
-        char* gender_print_v = (char*)calloc(2, sizeof(char));
+        // char* gender_print_v = (char*)calloc(2, sizeof(char));
 
-        if (current_node->value.gender == 0){
-            *gender_print_v = 'm';
-            *(gender_print_v + 1) = 'a';
-        }
-        else {
-            *gender_print_v = 'f';
-            *(gender_print_v + 1) = 'e';
-        }
+        // if (current_node->value.gender == 0){
+        //     *gender_print_v = 'm';
+        //     *(gender_print_v + 1) = 'a';
+        // }
+        // else {
+        //     *gender_print_v = 'f';
+        //     *(gender_print_v + 1) = 'e';
+        // }
 
-        printf("%c%c\t", *gender_print_v, *(gender_print_v + 1));
+        // printf("%c%c\t", *gender_print_v, *(gender_print_v + 1));
+
+        printf("%d\t", current_node->value.gender);
 
         print_word(current_node->value.group); printf("\t");
 
@@ -90,24 +97,6 @@ int main()
 
         current_node = current_node->next;
     }
-
-
-    // while (students != NULL)
-    // {
-    //     printf("f\n");
-
-    //     print_word(students[0].last_name);
-
-    //     printf("f\n");
-
-    //     printf("%d", students->age);
-
-    //     students--;
-
-    //     printf("%d", students->age);
-    // } 
-
-    printf("f\n");
 }
 
 char* word_generator(int word_length)

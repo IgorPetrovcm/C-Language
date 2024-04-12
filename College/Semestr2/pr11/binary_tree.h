@@ -23,4 +23,8 @@ node_list* get_students(tree* tree);
 
 void geting_students(node_list* students, tree_node** node);
 
+node_list* get_students_with_fields_for_task(tree* tree);
+
+void geting_students_with_fields_for_task(node_list* students, tree_node** node);
+
 # endif

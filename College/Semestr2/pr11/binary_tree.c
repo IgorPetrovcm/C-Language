@@ -60,15 +60,15 @@ node_list* get_students(tree* tree)
     }
 
     node_list result = {.head = NULL, .tail = NULL};
-    node_list* nodes = &result; 
+    node_list* to_nodes = &result; 
 
-    add_node_in_list(nodes, tree->head->value);
+    add_node_in_list(to_nodes, tree->head->value);
 
-    geting_students(nodes, tree->head->left);
+    geting_students(to_nodes, tree->head->left);
 
-    geting_students(nodes, tree->head->right);
+    geting_students(to_nodes, tree->head->right);
 
-    return nodes;
+    return to_nodes;
 }
 
 void geting_students(node_list* students, tree_node** node)
@@ -77,13 +77,53 @@ void geting_students(node_list* students, tree_node** node)
         return;
     }
 
-    tree_node* values_for_node = *node;
+    add_node_in_list(students, (*node)->value);
 
-    add_node_in_list(students, values_for_node->value);
+    geting_students(students, (*node)->left); 
 
-    geting_students(students, values_for_node->left); 
-
-    geting_students(students, values_for_node->right); 
+    geting_students(students, (*node)->right); 
 
     return;
 }
+
+node_list* get_students_with_fields_for_task(tree* tree)
+{
+    if (tree->head == NULL){
+        return NULL;
+    }
+
+    node_list result = {.head = NULL, .tail = NULL};
+
+    node_list* to_nodes = &result;
+
+    if (tree->head->value->assessment_by_chemistry == 5 && tree->head->value->gender == 1){
+        add_node_in_list(to_nodes, tree->head->value);
+    } 
+    
+    geting_students_with_fields_for_task(to_nodes, tree->head->left);
+
+    geting_students_with_fields_for_task(to_nodes, tree->head->right);
+
+    return to_nodes;
+}
+
+void geting_students_with_fields_for_task(node_list* students, tree_node** node)
+{
+    if (node == NULL){
+        return;
+    }
+
+    printf("%d", (*node)->value->gender);
+
+
+    if ((*node)->value->assessment_by_chemistry == 5 && (*node)->value->gender == 1){
+            printf("F");
+
+        add_node_in_list(students, (*node)->value);
+    }
+
+    geting_students_with_fields_for_task(students, (*node)->left);
+
+    geting_students_with_fields_for_task(students, (*node)->right);
+}
+
