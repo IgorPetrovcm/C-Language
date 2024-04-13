@@ -4,6 +4,23 @@
 # include <stdio.h>
 # include <stdlib.h>
 
+tree_node* init_tree_node()
+{
+    tree_node* node = (tree_node*)malloc(sizeof(tree_node));
+
+    node->value = NULL;
+
+    node->left = (tree_node**)malloc(sizeof(tree_node));
+
+    node->right = (tree_node**)malloc(sizeof(tree_node));
+
+    *node->left = NULL;
+
+    *node->right = NULL;
+
+    return node;
+}
+
 void add_node(tree* tree, struct student* value)
 {
     tree_node* new_node = (tree_node*)malloc(sizeof(tree_node));
@@ -11,13 +28,8 @@ void add_node(tree* tree, struct student* value)
     new_node->value = value;
 
     if (tree->head == NULL){
-        tree->head = (tree_node*)malloc(sizeof(tree_node));
 
-        tree->head->left = (tree_node**)malloc(sizeof(tree_node));
-        tree->head->right = (tree_node**)malloc(sizeof(tree_node));
-
-        *tree->head->left = NULL;
-        *tree->head->right = NULL;
+        tree->head = init_tree_node();
 
         tree->head->value = new_node->value;
     }
@@ -35,14 +47,8 @@ void adding_node(tree_node** current_node, tree_node* node)
 {
     if ((*current_node) == NULL){
 
-        *current_node = (tree_node*)malloc(sizeof(tree_node)) ;
-
-        (*current_node)->right = (tree_node**)malloc(sizeof(tree_node));
-        (*current_node)->left = (tree_node**)malloc(sizeof(tree_node));
-
-        *(*current_node)->right = NULL;
-        *(*current_node)->left = NULL;
-
+        *current_node = init_tree_node();
+        
         (*current_node)->value = node->value;
     }
     else if (node->value->assessment_by_chemistry > (*current_node)->value->assessment_by_chemistry){

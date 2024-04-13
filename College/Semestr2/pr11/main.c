@@ -24,7 +24,7 @@ int main()
         groups_list[i] = *word_generator(group_name_length);
     }
 
-    tree tree = {.head = NULL, .count = 0};
+    tree tree = INI;
 
     for (int i = 0; i < 100; i++)
     {
@@ -53,37 +53,34 @@ int main()
 
         new_student->assessment_by_physics = (char)2 + rand() % 4;
 
-        add_node(&tree, new_student);
+        tree.add(&tree, new_student);
 
     }
 
-    node_list* list_res = get_students_with_fields_for_task(&tree);
+    node_list* list_res = tree.get_values_with_fields_for_task(&tree);
 
     node_with_student* current_node = list_res->head;
     
     while (current_node->next != NULL)
     {   
-        printf("f");
         print_word(current_node->value.last_name); printf("\t");
 
         print_word(current_node->value.first_name); printf("\t");
 
         printf("%d\t", current_node->value.age);
 
-        // char* gender_print_v = (char*)calloc(2, sizeof(char));
+        char* gender_print_v = (char*)calloc(2, sizeof(char));
 
-        // if (current_node->value.gender == 0){
-        //     *gender_print_v = 'm';
-        //     *(gender_print_v + 1) = 'a';
-        // }
-        // else {
-        //     *gender_print_v = 'f';
-        //     *(gender_print_v + 1) = 'e';
-        // }
+        if (current_node->value.gender == 0){
+            *gender_print_v = 'm';
+            *(gender_print_v + 1) = 'a';
+        }
+        else {
+            *gender_print_v = 'f';
+            *(gender_print_v + 1) = 'e';
+        }
 
-        // printf("%c%c\t", *gender_print_v, *(gender_print_v + 1));
-
-        printf("%d\t", current_node->value.gender);
+        printf("%c%c\t", *gender_print_v, *(gender_print_v + 1));
 
         print_word(current_node->value.group); printf("\t");
 
@@ -106,10 +103,7 @@ char* word_generator(int word_length)
     for (int i = 0; i < word_length; i++)
     {
         name[i] = 97 + rand() % 26;
-
-        // printf("%c", name[i]);
     }
-    // printf("\n");
 
     return name;
 }
