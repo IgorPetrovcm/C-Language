@@ -5,7 +5,10 @@
 # include <stdlib.h>
 
 char* word_generator(int word_length);
-void print_word(char* begin_word);
+char* get_string_word(char* begin_word);
+char* get_string_number(int number);
+char* get_string_student_from_node(node_with_student* node);
+
 
 
 const int nodes_list_count = 100;
@@ -24,7 +27,7 @@ int main()
         groups_list[i] = *word_generator(group_name_length);
     }
 
-    tree tree = INI;
+    tree tree = INIT_TREE;
 
     for (int i = 0; i < 100; i++)
     {
@@ -60,38 +63,21 @@ int main()
     node_list* list_res = tree.get_values_with_fields_for_task(&tree);
 
     node_with_student* current_node = list_res->head;
+
+    int count = 0;
     
     while (current_node->next != NULL)
     {   
-        print_word(current_node->value.last_name); printf("\t");
+        char* pr = get_string_student_from_node(current_node);
 
-        print_word(current_node->value.first_name); printf("\t");
+        printf("%s", pr);
 
-        printf("%d\t", current_node->value.age);
+        FILE* file = fopen("task14/result.txt", "a+");
 
-        char* gender_print_v = (char*)calloc(2, sizeof(char));
+        fprintf(file, "%s", pr);
 
-        if (current_node->value.gender == 0){
-            *gender_print_v = 'm';
-            *(gender_print_v + 1) = 'a';
-        }
-        else {
-            *gender_print_v = 'f';
-            *(gender_print_v + 1) = 'e';
-        }
-
-        printf("%c%c\t", *gender_print_v, *(gender_print_v + 1));
-
-        print_word(current_node->value.group); printf("\t");
-
-        printf("%d\t", current_node->value.assessment_by_math);
-
-        printf("%d\t", current_node->value.assessment_by_physics);
-
-        printf("%d\t", current_node->value.assessment_by_chemistry);
-
-        printf("\n");
-
+        fclose(file);
+        
         current_node = current_node->next;
     }
 }
@@ -108,11 +94,175 @@ char* word_generator(int word_length)
     return name;
 }
 
-void print_word(char* begin_word)
+char* get_string_word(char* begin_word)
 {
+    char* string = (char*)malloc(24);
+
+    int count = 0;
+
     while (*begin_word != 0)
     {
-        printf("%c", *begin_word);
+        *string = *begin_word;
+        count++;
+
+        string++;
         begin_word++;
     }
+
+    return string - count;
+}
+
+char* get_string_number(int number)
+{
+
+    char* string = (char*)malloc(10);
+
+    while (number != 0)
+    {
+        *string = number % 10 + 48;
+
+        number /= 10;
+
+        string++;
+    }
+
+    return string - 1;
+}
+
+char* get_string_student_from_node(node_with_student* node)
+{
+    char* result = (char*)malloc(365);
+    int count_for_tesult = 0;
+
+    char* temp = get_string_word(node->value.last_name);
+
+    while (!(*temp < 97) && !(*temp > 122))
+    {
+        *result = *temp;
+        result++;
+        temp++;
+
+        count_for_tesult++;
+    }
+
+    *result = '\t';
+    result++;
+    count_for_tesult++;
+
+    temp = get_string_word(node->value.first_name);
+
+    while (!(*temp < 97) && !(*temp > 122))
+    {
+        *result = *temp;
+        result++;
+        temp++;
+
+        count_for_tesult++;
+    }
+
+    *result = '\t';
+    result++;
+    count_for_tesult++;
+
+    char* digit = get_string_number(node->value.age);
+
+    while (!(*digit < 48) && !(*digit > 57))
+    {
+        *result = (char)*digit;
+        result++;
+        digit--;
+
+        count_for_tesult++;
+    }
+
+    *result = '\t';
+    result++;
+    count_for_tesult++;
+
+    char* gender_print_v = (char*)calloc(2, sizeof(char));
+
+    if (node->value.gender == 0){
+        *gender_print_v = 'm';
+        *(gender_print_v + 1) = 'a';
+    }
+    else {
+        *gender_print_v = 'f';
+        *(gender_print_v + 1) = 'e';
+    }
+
+    *result = *gender_print_v;
+    result++;
+    count_for_tesult++;
+
+    *result = *(gender_print_v + 1);
+    result++;
+    count_for_tesult++;
+
+    *result = '\t';
+    result++;
+    count_for_tesult++;
+
+    temp = get_string_word(node->value.group);
+
+    while (!(*temp < 97) && !(*temp > 122))
+    {
+        *result = *temp;
+        result++;
+        temp++;
+
+        count_for_tesult++;
+    }
+
+    *result = '\t';
+    result++;
+    count_for_tesult++;
+
+    digit = get_string_number(node->value.assessment_by_chemistry);
+
+    while (!(*digit < 48) && !(*digit > 57))
+    {
+        *result = (char)*digit;
+        result++;
+        digit--;
+
+        count_for_tesult++;
+    }
+
+    *result = '\t';
+    result++;
+    count_for_tesult++;
+
+    digit = get_string_number(node->value.assessment_by_physics);
+
+    while (!(*digit < 48) && !(*digit > 57))
+    {
+        *result = (char)*digit;
+        result++;
+        digit--;
+
+        count_for_tesult++;
+    }
+
+    *result = '\t';
+    result++;
+    count_for_tesult++;
+
+    digit = get_string_number(node->value.assessment_by_math);
+
+    while (!(*digit < 48) && !(*digit > 57))
+    {
+        *result = (char)*digit;
+        result++;
+        digit--;
+
+        count_for_tesult++;
+    }
+
+    *result = '\t';
+    result++;
+    count_for_tesult++;
+
+    *result = '\n';
+
+    return result - count_for_tesult;
 }

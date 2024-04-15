@@ -17,9 +17,9 @@ tree_node* init_tree_node();
 typedef struct tree{
     struct tree_node* head;
     int count;
-    void (*add) (tree*, struct student*);
-    node_list* (*get_values) (tree*);
-    node_list* (*get_values_with_fields_for_task) (tree*);
+    void (*add) (struct tree*, struct student*);
+    node_list* (*get_values) (struct tree*);
+    node_list* (*get_values_with_fields_for_task) (struct tree*);
 } tree;
 
 void add_node(tree* tree, struct student* value);
