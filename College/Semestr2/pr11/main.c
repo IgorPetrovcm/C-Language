@@ -7,7 +7,7 @@
 char* word_generator(int word_length);
 char* get_string_word(char* begin_word);
 char* get_string_number(int number);
-char* get_string_student_from_node(node_with_student* node);
+char* get_string_student_from_node(node_with_student* node, int* count_symbols);
 
 
 
@@ -64,19 +64,36 @@ int main()
 
     node_with_student* current_node = list_res->head;
 
-    int count = 0;
+    int count_entries = 0;
     
     while (current_node->next != NULL)
     {   
-        char* pr = get_string_student_from_node(current_node);
+        int count_symbols = 0;
+        FILE* bin_file;
+        FILE* file;
+
+        char* pr = get_string_student_from_node(current_node, &count_symbols);
 
         printf("%s", pr);
 
-        FILE* file = fopen("task14/result.txt", "a+");
+        if (count_entries == 0){
+            file = fopen("task14/result.txt", "w");
+            bin_file = fopen("task15/result.bin", "wb");
+
+            count_entries++;
+        }
+        else {
+            file = fopen("task14/result.txt", "a");
+            bin_file = fopen("task15/result.bin", "ab");
+        }
 
         fprintf(file, "%s", pr);
 
         fclose(file);
+
+        fwrite(pr, sizeof(char), count_symbols, bin_file);
+
+        fclose(bin_file);
         
         current_node = current_node->next;
     }
@@ -129,10 +146,11 @@ char* get_string_number(int number)
     return string - 1;
 }
 
-char* get_string_student_from_node(node_with_student* node)
+char* get_string_student_from_node(node_with_student* node, int* count_symbols)
 {
     char* result = (char*)malloc(365);
-    int count_for_tesult = 0;
+
+    *count_symbols = 0;
 
     char* temp = get_string_word(node->value.last_name);
 
@@ -142,12 +160,12 @@ char* get_string_student_from_node(node_with_student* node)
         result++;
         temp++;
 
-        count_for_tesult++;
+        (*count_symbols)++;
     }
 
     *result = '\t';
     result++;
-    count_for_tesult++;
+    (*count_symbols)++;
 
     temp = get_string_word(node->value.first_name);
 
@@ -157,12 +175,12 @@ char* get_string_student_from_node(node_with_student* node)
         result++;
         temp++;
 
-        count_for_tesult++;
+        (*count_symbols)++;
     }
 
     *result = '\t';
     result++;
-    count_for_tesult++;
+    (*count_symbols)++;
 
     char* digit = get_string_number(node->value.age);
 
@@ -172,12 +190,12 @@ char* get_string_student_from_node(node_with_student* node)
         result++;
         digit--;
 
-        count_for_tesult++;
+        (*count_symbols)++;
     }
 
     *result = '\t';
     result++;
-    count_for_tesult++;
+    (*count_symbols)++;
 
     char* gender_print_v = (char*)calloc(2, sizeof(char));
 
@@ -192,15 +210,15 @@ char* get_string_student_from_node(node_with_student* node)
 
     *result = *gender_print_v;
     result++;
-    count_for_tesult++;
+    (*count_symbols)++;
 
     *result = *(gender_print_v + 1);
     result++;
-    count_for_tesult++;
+    (*count_symbols)++;
 
     *result = '\t';
     result++;
-    count_for_tesult++;
+    (*count_symbols)++;
 
     temp = get_string_word(node->value.group);
 
@@ -210,12 +228,12 @@ char* get_string_student_from_node(node_with_student* node)
         result++;
         temp++;
 
-        count_for_tesult++;
+        (*count_symbols)++;
     }
 
     *result = '\t';
     result++;
-    count_for_tesult++;
+    (*count_symbols)++;
 
     digit = get_string_number(node->value.assessment_by_chemistry);
 
@@ -225,12 +243,12 @@ char* get_string_student_from_node(node_with_student* node)
         result++;
         digit--;
 
-        count_for_tesult++;
+        (*count_symbols)++;
     }
 
     *result = '\t';
     result++;
-    count_for_tesult++;
+    (*count_symbols)++;
 
     digit = get_string_number(node->value.assessment_by_physics);
 
@@ -240,12 +258,12 @@ char* get_string_student_from_node(node_with_student* node)
         result++;
         digit--;
 
-        count_for_tesult++;
+        (*count_symbols)++;
     }
 
     *result = '\t';
     result++;
-    count_for_tesult++;
+    (*count_symbols)++;
 
     digit = get_string_number(node->value.assessment_by_math);
 
@@ -255,14 +273,14 @@ char* get_string_student_from_node(node_with_student* node)
         result++;
         digit--;
 
-        count_for_tesult++;
+        (*count_symbols)++;
     }
 
     *result = '\t';
     result++;
-    count_for_tesult++;
+    (*count_symbols)++;
 
     *result = '\n';
 
-    return result - count_for_tesult;
+    return result - *count_symbols;
 }
