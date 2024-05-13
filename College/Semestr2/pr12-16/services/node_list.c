@@ -1,8 +1,6 @@
 # include "../domain/business_logic/node_list.h"
 # include <stdio.h>
 
-# define INIT_NODE_LIST {.head = NULL, .tail = NULL, }
-
 void add_node(node_list* list, void* value )
 {
     node user_node = {.value = value, .next = NULL};
@@ -20,3 +18,5 @@ void add_node(node_list* list, void* value )
 
     list->count++;
 }
+
+# define INIT_NODE_LIST {.head = NULL, .tail = NULL, }

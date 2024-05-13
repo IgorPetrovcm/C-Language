@@ -14,4 +14,6 @@ typedef struct node_list{
     void (*add) (struct node_list* list, void* value);
 } node_list;
 
+# define INIT_NODE_LIST {.head = NULL, .tail = NULL, }
+
 # endif

@@ -1,3 +1,28 @@
+!<arch>
+node_list.c/    0           0     0     644     439       `
+# include "../domain/business_logic/node_list.h"
+# include <stdio.h>
+
+void add_node(node_list* list, void* value )
+{
+    node user_node = {.value = value, .next = NULL};
+
+    if (list->head == NULL){
+        list->head = &user_node;
+
+        list->tail = &user_node;
+    }
+    else{
+        list->tail->next = &user_node;
+
+        list->tail = &user_node;
+    }
+
+    list->count++;
+}
+
+# define INIT_NODE_LIST {.head = NULL, .tail = NULL, }
+logging.c/      0           0     0     644     1706      `
 # include "../domain/business_logic/logging.h"
 # include <stdio.h>
 # include <time.h>
@@ -71,3 +96,44 @@ void logme(log_worker worker, char* information)
         worker.logger[i](worker, information);
     }
 }
+
+# define INIT_LOG_WORKER {.logger_count = 0, .file_context = NULL, .logme = logme. .log_current_time = log_current_time}file_context.c/ 0           0     0     644     791       `
+# include "../domain/business_logic/file_context.h"
+# include <stdio.h>
+# include <string.h>
+
+void write(file_context context, char* message)
+{
+    fputs(
+        message,
+        context.file_to_write
+        );
+}
+
+void binary_write(file_context context, char* message)
+{
+    size_t message_length = strlen(message);
+
+    fwrite(
+        message,
+        sizeof(char), 
+        message_length, 
+        context.binary_file_to_write
+        );
+}
+
+void add_path(file_context context, char* path)
+{
+    context.file_to_write = fopen(
+        strcat(path, "\\output.txt"),
+        "w+"
+    );
+
+    context.binary_file_to_write = fopen(
+        strcat(path, "\\output.bin"),
+        "a+b"
+    );
+}
+
+# define INIT_FILE_CONTEXT {.add_path = add_path, .write = write, .binary_write = binary_write}
+

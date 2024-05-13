@@ -5,10 +5,13 @@
 void write(file_context context, char* message)
 {
     fputs(
-        message, 
+        message,
         context.file_to_write
         );
+}
 
+void binary_write(file_context context, char* message)
+{
     size_t message_length = strlen(message);
 
     fwrite(
@@ -31,5 +34,4 @@ void add_path(file_context context, char* path)
         "a+b"
     );
 }
-
 
