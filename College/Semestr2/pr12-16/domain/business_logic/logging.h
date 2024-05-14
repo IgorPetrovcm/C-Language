@@ -23,6 +23,6 @@ void logger_to_console(log_worker);
 void logger_to_text_file(log_worker);
 void logger_to_binary_file(log_worker); 
 
-# define INIT_LOG_WORKER {.log_current_time = log_current_time, .logme = logme}
+# define INIT_LOG_WORKER {.log_current_time = log_current_time, .logme = logme, .context = INIT_FILE_CONTEXT}
 
 # endif
