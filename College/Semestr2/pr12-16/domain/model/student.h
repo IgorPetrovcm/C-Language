@@ -2,11 +2,11 @@
 # define STUDENT_STRUCT
 
 typedef struct student {
-    char last_name[35];
-    char first_name[35];
+    char* last_name;
+    char* first_name;
     char gender;
     char age;
-    char group[4];
+    char* group;
     char math_score;
     char physics_score;
     char chemistry_score;
