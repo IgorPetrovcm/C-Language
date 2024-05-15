@@ -11,9 +11,11 @@ typedef struct node_list{
     node* tail;
     int count;
 
-    void (*add) (struct node_list* list, void* value);
+    void (*add) (struct node_list list, void* value);
 } node_list;
 
-# define INIT_NODE_LIST {.head = NULL, .tail = NULL, }
+void add(node_list list, void* value);
+
+# define INIT_NODE_LIST {.head = NULL, .tail = NULL, .add = add}
 
 # endif
