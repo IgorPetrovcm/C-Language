@@ -24,14 +24,24 @@ void binary_write(file_context context, char* message)
 
 void add_path(file_context context, char* path)
 {
+    char path_to_text[255];
+    strcpy(path_to_text, path);
+
+    char path_to_bin[255]; 
+    strcpy(path_to_bin, path);
+
     context.file_to_write = fopen(
-        strcat(path, "\\output.txt"),
+        strcat(path_to_text, "/output.txt"),
         "w+"
     );
 
     context.binary_file_to_write = fopen(
-        strcat(path, "\\output.bin"),
+        strcat(path_to_bin, "/output.bin"),
         "a+b"
     );
+
+    if (context.file_to_write == NULL || context.binary_file_to_write == NULL){
+        printf("NOOOO");
+    }
 }
 

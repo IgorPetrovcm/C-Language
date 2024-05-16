@@ -14,12 +14,15 @@ const char GROUP_NAME_COUNT = 3;
 
 const char genders[] = {102, 109}; // [0] = f(female); [1] = m(male)
 
+char input_path[255];
+
 int main()
 {
     log_worker loggers = INIT_LOG_WORKER;
     logger_to_console(loggers);
 
-    loggers.context.add_path( loggers.context, ".\\result");
+    strcpy(input_path, ".");
+    loggers.context.add_path( loggers.context, input_path);
 
     logger_to_text_file(loggers);
     logger_to_binary_file(loggers);
@@ -57,6 +60,12 @@ int main()
 
     node* student = students.head;
 
+    char record[2042];
+
+    if (student == NULL){
+        printf("NO");
+    }
+
     while (student != NULL)
     {
         struct student* current = student->value;
@@ -64,34 +73,37 @@ int main()
         if (current->chemistry_score == 5 && current->gender == genders[1] ){
             sorted_students.add(sorted_students, current);
         }
+        strcat(record, current->last_name);
 
         student = student->next;
     }
 
-    student = sorted_students.head;
+    // student = sorted_students.head;
 
-    char* record;
+    // while (student != NULL)
+    // {
+    //     struct student* current = student->value;
 
-    while (student != NULL)
-    {
-        struct student* current = student->value;
+    //     printf("%s", record);
+    //     strcat(record, "A");
+    //         strcat(record, "\t");
 
-        record = strcat(record, current->last_name);
-            record = strcat(record, "\t");
-        record = strcat(record, current->first_name);
-            record = strcat(record, "\t");
-        record = strcat(record, &current->gender);
-            record = strcat(record, "\t");
-        record = strcat(record, &current->age);
-            record = strcat(record, "\t");
-        record = strcat(record, current->group);
-            record = strcat(record, "\t");
-        record = strcat(record, &current->math_score);
-            record = strcat(record, "\t");
-        record = strcat(record, &current->physics_score);
-            record = strcat(record, "\t");
-        record = strcat(record, &current->chemistry_score);
+    //     strcat(record, current->first_name);
+    //         strcat(record, "\t");
+    //     strcat(record, &current->gender);
+    //         strcat(record, "\t");
+    //     strcat(record, &current->age);
+    //         strcat(record, "\t");
+    //     strcat(record, current->group);
+    //         strcat(record, "\t");
+    //     strcat(record, &current->math_score);
+    //         strcat(record, "\t");
+    //     strcat(record, &current->physics_score);
+    //         strcat(record, "\t");
+    //     strcat(record, &current->chemistry_score);
 
-        record = strcat(record, "\n");
-    }
+    //     strcat(record, "\n");
+    // }
+
+    printf("%s", record);
 }
