@@ -18,14 +18,20 @@ char input_path[255];
 
 int main()
 {
-    log_worker loggers = INIT_LOG_WORKER;
-    logger_to_console(loggers);
+    file_context in_stack_context = INIT_FILE_CONTEXT;
+
+    log_settings* log = malloc(sizeof(log_settings));
+    log->context = &in_stack_context;
+
+    logging in_stack_logging = INIT_LOGGING;
+    logging* logging = &in_stack_logging;
 
     strcpy(input_path, ".");
-    loggers.context.add_path( loggers.context, input_path);
+    log->context->add_path(log->context, input_path);
 
-    logger_to_text_file(loggers);
-    logger_to_binary_file(loggers);
+    logging->register_log(logging, logging_console);
+    logging->register_log(logging, logging_text_file);
+    logging->register_log(logging, logging_binary_file);
 
     char* groups[ GROUPS_COUNT];
 
@@ -44,8 +50,6 @@ int main()
 
         rnd_student->first_name = get_word(5);
 
-        rnd_student->age = 16 + rand() % 5;
-
         rnd_student->gender = genders[ rand() % 2 ];
 
         rnd_student->group = groups[ rand() % (GROUPS_COUNT) ];
@@ -56,11 +60,13 @@ int main()
 
         students.add(&students, rnd_student);
 
-        printf("%d\t%s\t%s\t%c\t%s\t%d\t%d\n", rnd_student->age, rnd_student->last_name, rnd_student->first_name, rnd_student->gender, rnd_student->group, rnd_student->math_score, rnd_student->chemistry_score);
+        // printf("%s\t%s\t%c\t%s\t%d\t%d\n", rnd_student->last_name, rnd_student->first_name, rnd_student->gender, rnd_student->group, rnd_student->math_score, rnd_student->chemistry_score);
     }
 
 
     node_list sorted_students = INIT_NODE_LIST;
+    node_list* new_sorted = malloc(sizeof(node_list));
+    *new_sorted = sorted_students;
 
     node* student = students.head;
 
@@ -69,41 +75,60 @@ int main()
         struct student* current = student->value;
 
         if (current->chemistry_score == 5 && current->gender == genders[0] ){
-            sorted_students.add(&sorted_students, current);
+            new_sorted->add(new_sorted, current);
         }
         student = student->next;
+
+        free(current);
     }
 
-    char record[2000];
+    char record[255];
 
-    student = sorted_students.head;
+    student = new_sorted->head;
+
+    struct student* lte = student->value;
+
+    if (lte->last_name != NULL)
+    {
+        printf("J");
+        for (int i = 0; i < 5; i++)
+        {
+            printf("%c", *(lte->last_name + i));
+        }
+    }
 
     strcpy(record, "\n");
+    // printf("%s", lte->last_name);
 
-    while (student != NULL)
-    {
-        struct student* current = student->value;
+    // while (student != NULL)
+    // {
+    //     struct student* current = student->value;
 
-        strcat(record, current->last_name);
-            strcat(record, "\t");
-        strcat(record, current->first_name);
-            strcat(record, "\t");
-        strcat(record, &current->gender);
-            strcat(record, "\t");
-        strcat(record, number_to_string(current->age));
-            strcat(record, "\t");
-        strcat(record, current->group);
-            strcat(record, "\t");
-        // strcat(record, number_to_string(current->math_score));
-        //     strcat(record, "\t");
-        // strcat(record, number_to_string(current->physics_score));
-        //     strcat(record, "\t");
-        // strcat(record, number_to_string(current->chemistry_score));
+    //     strcat(record, current->last_name);
+    //         strcat(record, "\t");
+    //     strcat(record, current->first_name);
+    //         strcat(record, "\t");
+    //     strcat(record, &current->gender);
+    //         strcat(record, "\t");
+    //     strcat(record, current->group);
+    //         strcat(record, "\t");
+    //     printf("F");
+    //     strcat(record, number_to_string(current->math_score));
+    //     printf("F");
+    //         strcat(record, "\t");
+    //     strcat(record, number_to_string(current->physics_score));
+    //         strcat(record, "\t");
+    //     strcat(record, number_to_string(current->chemistry_score));
 
-        strcat(record, "\n");
+    //     strcat(record, "\n");
 
-        student = student->next;
-    }
+    //     free(current);
 
-    printf("%s", record);
+    //     student = student->next;
+    // }
+
+    // logging->logme(&loggers, record);
+
+    // free(logging);
+    // free(student);
 }

@@ -1,73 +1,62 @@
 # include "../domain/business_logic/logging.h"
 # include <stdio.h>
+# include <stdlib.h>
 # include <time.h>
 
-void log_current_time()
+void logging_current_time()
 {
     time_t to_time = time(NULL);
 
     struct tm* current_time = localtime(&to_time);
 
-    printf("%d:%d:%d", current_time->tm_hour, current_time->tm_min, current_time->tm_sec);
+    printf("logging: %d:%d:%d", current_time->tm_hour, current_time->tm_min, current_time->tm_sec);
 }
 
-void log_to_console(log_worker worker, char* information)
+void register_log(logging* logging, void (*log)(log_settings *, char*))
+{    
+    logging->logs_count++;
+
+    logging->logs_output = realloc( logging->logs_output, logging->logs_count * sizeof(log_output));
+
+    logging->logs_output[ logging->logs_count - 1 ] = log;
+}
+
+void logging_console(log_settings* setting, char* information)
 {
-    printf("\033[0;33m");
-    log_current_time();
+    printf("\x1b[33m");
+    logging_current_time();
     printf("\n");
-    printf("\033[0;37m");
+    printf("\x1b[0m");
 
     printf("%s", information);
 }
 
-void logger_to_console(log_worker worker)
+void logging_text_file(log_settings* setting, char* information)
 {
-    worker.logger[ worker.logger_count ] = log_to_console;
+    setting->context->write( setting->context, information );
 
-    worker.logger_count++;
-}
-
-void log_to_text_file(log_worker worker, char* information)
-{
-    worker.context.write( worker.context, information );
-
-    printf("\033[0;33m");
+    printf("\x1b[33m");
     printf("A text file written to - ");
-    log_current_time();
+    logging_current_time();
     printf("\n");
     printf("\033[0;37m");
 }
 
-void logger_to_text_file(log_worker worker)
+void logging_binary_file(log_settings* setting, char* information)
 {
-    worker.logger[ worker.logger_count ] = log_to_text_file;
+    setting->context->binary_write( setting->context, information );
 
-    worker.logger_count++;
-}
-
-void log_to_binary_file(log_worker worker, char* information)
-{
-    worker.context.binary_write( worker.context, information );
-
-    printf("\033[0;33m");
+    printf("\x1b[33m");
     printf("A binary file written to - ");
-    log_current_time();
+    logging_current_time();
     printf("\n");
     printf("\033[0;37m");
 }
 
-void logger_to_binary_file(log_worker worker)
+void launch(logging* logging, char* information)
 {
-    worker.logger[ worker.logger_count ] = log_to_binary_file;
-
-    worker.logger_count++;
-}
-
-void logme(log_worker worker, char* information)
-{
-    for (int i = 0; i < worker.logger_count; i++)
+    for (int i = 0; i < logging->logs_count; i++)
     {
-        worker.logger[i](worker, information);
+        logging->logs_output [i]( logging->settings, information );
     }
 }

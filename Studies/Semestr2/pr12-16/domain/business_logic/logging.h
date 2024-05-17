@@ -3,26 +3,37 @@
 
 # include "file_context.h"
 
-
-typedef struct log_worker{
+typedef struct log_settings{
     char* title;
-    int logger_count;
-    file_context context;
-    
-    void (*logme) (struct log_worker, char* information);
 
-    void (*log_current_time) ();
+    file_context* context;    
+} log_settings;
 
-    void (*logger[]) (struct log_worker worker, char* information);
-} log_worker;
+typedef void (*log_output) (struct log_settings*, char*);
 
-void logme (log_worker, char*);
-void log_current_time ();
+typedef struct logging{
+    log_output* logs_output;
+    int logs_count;
 
-void logger_to_console(log_worker);
-void logger_to_text_file(log_worker);
-void logger_to_binary_file(log_worker); 
+    log_settings* settings;
 
-# define INIT_LOG_WORKER {.log_current_time = log_current_time, .logme = logme, .context = INIT_FILE_CONTEXT}
+    void (*register_log) (struct logging*, void (*) (log_settings*, char*));
+
+    void (*logging_current_time) ();
+
+    void (*launch) (struct logging*, char*);
+
+} logging;
+
+void logging_current_time ();
+void launch (logging*, char*);
+
+void register_log(logging*, void (*) (log_settings*, char*));
+
+void logging_console(log_settings*, char*);
+void logging_text_file(log_settings*, char*);
+void logging_binary_file(log_settings*, char*); 
+
+# define INIT_LOGGING {.register_log = register_log, .logging_current_time = logging_current_time, .launch = launch}
 
 # endif

@@ -5,7 +5,6 @@ typedef struct student {
     char* last_name;
     char* first_name;
     char gender;
-    char age;
     char* group;
     char math_score;
     char physics_score;
