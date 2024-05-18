@@ -17,9 +17,9 @@ char* get_word(int word_length)
 
 char* number_to_string(char number)
 {
-    char* string = malloc(sizeof(char));
+    char* string = &number;
 
-    *string = 48 + number;
+    *string += 48;
 
     return string;
 }

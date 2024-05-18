@@ -55,8 +55,11 @@ void logging_binary_file(log_settings* setting, char* information)
 
 void launch(logging* logging, char* information)
 {
+    printf("%d", logging->logs_count);
+
     for (int i = 0; i < logging->logs_count; i++)
     {
+        printf("FE");
         logging->logs_output [i]( logging->settings, information );
     }
 }

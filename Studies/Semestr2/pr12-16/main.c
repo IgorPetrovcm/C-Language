@@ -29,7 +29,7 @@ int main()
     strcpy(input_path, ".");
     log->context->add_path(log->context, input_path);
 
-    logging->register_log(logging, logging_console);
+    // logging->register_log(logging, logging_console);
     logging->register_log(logging, logging_text_file);
     logging->register_log(logging, logging_binary_file);
 
@@ -78,57 +78,38 @@ int main()
             new_sorted->add(new_sorted, current);
         }
         student = student->next;
-
-        free(current);
     }
 
     char record[255];
 
     student = new_sorted->head;
 
-    struct student* lte = student->value;
+    strcpy(record, "\n");
 
-    if (lte->last_name != NULL)
+    while (student != NULL)
     {
-        printf("J");
-        for (int i = 0; i < 5; i++)
-        {
-            printf("%c", *(lte->last_name + i));
-        }
+        struct student* current = student->value;
+
+        strcat(record, current->last_name);
+            strcat(record, "\t");
+        strcat(record, current->first_name);
+            strcat(record, "\t");
+        strcat(record, &current->gender);
+            strcat(record, "\t");
+        strcat(record, current->group);
+            strcat(record, "\t");
+        // strcpy(record, number_to_string(current->math_score));
+        //     strcat(record, "\t");
+        // strcpy(record, number_to_string(current->physics_score));
+        //     strcat(record, "\t");
+        // strcpy(record, number_to_string(current->chemistry_score));
+
+        strcat(record, "\n");
+
+        free(current);
+
+        student = student->next;
     }
 
-    strcpy(record, "\n");
-    // printf("%s", lte->last_name);
-
-    // while (student != NULL)
-    // {
-    //     struct student* current = student->value;
-
-    //     strcat(record, current->last_name);
-    //         strcat(record, "\t");
-    //     strcat(record, current->first_name);
-    //         strcat(record, "\t");
-    //     strcat(record, &current->gender);
-    //         strcat(record, "\t");
-    //     strcat(record, current->group);
-    //         strcat(record, "\t");
-    //     printf("F");
-    //     strcat(record, number_to_string(current->math_score));
-    //     printf("F");
-    //         strcat(record, "\t");
-    //     strcat(record, number_to_string(current->physics_score));
-    //         strcat(record, "\t");
-    //     strcat(record, number_to_string(current->chemistry_score));
-
-    //     strcat(record, "\n");
-
-    //     free(current);
-
-    //     student = student->next;
-    // }
-
-    // logging->logme(&loggers, record);
-
-    // free(logging);
-    // free(student);
+    logging->launch(logging, record);
 }
