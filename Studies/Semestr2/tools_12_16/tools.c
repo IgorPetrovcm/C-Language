@@ -20,6 +20,7 @@ char* number_to_string(char number)
     char* string = &number;
 
     *string += 48;
+    *(string + 1) = '\0';
 
     return string;
 }

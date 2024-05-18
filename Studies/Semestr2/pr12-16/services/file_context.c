@@ -14,12 +14,14 @@ void binary_write(file_context* context, char* message)
 {
     size_t message_length = strlen(message);
 
-    fwrite(
+    int true_writes = fwrite(
         message,
         sizeof(char), 
         message_length, 
         context->binary_file_to_write
         );
+
+    printf("%d", true_writes);
 }
 
 void add_path(file_context* context, char* path)
