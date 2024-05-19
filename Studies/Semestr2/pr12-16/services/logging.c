@@ -2,6 +2,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <time.h>
+# include <string.h>
+# include <errno.h>
 
 void logging_current_time()
 {
@@ -53,7 +55,7 @@ void logging_binary_file(log_settings* setting, char* information)
     printf("\033[0;37m");
 }
 
-void launch(logging* logging, char* information)
+int launch(logging* logging, char* information)
 {
     for (int i = 0; i < logging->logs_count; i++)
     {
@@ -62,5 +64,15 @@ void launch(logging* logging, char* information)
 
     fclose( logging->settings->context->binary_file_to_write );
     fclose( logging->settings->context->file_to_write );
+
+    if (errno != 0){
+        printf("\x1b[33m");
+        perror("In ""launch"" function error: "); 
+        printf("\x1b[31m");
+        printf("Exception: %s\n", strerror(errno));
+        printf("\x1b[0m");
+
+        return -1;
+    }    
 
 }

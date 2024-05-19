@@ -21,12 +21,12 @@ typedef struct logging{
 
     void (*logging_current_time) ();
 
-    void (*launch) (struct logging*, char*);
+    int (*launch) (struct logging*, char*);
 
 } logging;
 
 void logging_current_time ();
-void launch (logging*, char*);
+int launch (logging*, char*);
 
 void register_log(logging*, void (*) (log_settings*, char*));
 

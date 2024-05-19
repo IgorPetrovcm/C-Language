@@ -29,7 +29,9 @@ int main()
     logging->settings = log;
 
     strcpy(input_path, ".");
-    log->context->add_path(log->context, input_path);
+    if ( log->context->add_path(log->context, input_path) == -1){
+        return -1;
+    }
 
     logging->register_log(logging, logging_console);
     logging->register_log(logging, logging_text_file);
@@ -100,11 +102,11 @@ int main()
             strcat(record, "\t");
         strcat(record, current->group);
             strcat(record, "\t");
-        // strcat(record, number_to_string(current->math_score));
-        //     strcat(record, "\t");
-        // strcat(record, number_to_string(current->physics_score));
-        //     strcat(record, "\t");
-        // strcat(record, number_to_string(current->chemistry_score));
+        strcat(record, number_to_string(current->math_score));
+            strcat(record, "\t");
+        strcat(record, number_to_string(current->physics_score));
+            strcat(record, "\t");
+        strcat(record, number_to_string(current->chemistry_score));
 
         strcat(record, "\n");
 
@@ -114,4 +116,6 @@ int main()
     }
 
     logging->launch(logging, record);
+
+    return 0;
 }

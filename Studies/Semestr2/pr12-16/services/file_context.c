@@ -1,30 +1,53 @@
 # include "../domain/business_logic/file_context.h"
 # include <stdio.h>
 # include <string.h>
+# include <errno.h>
 
-void write(file_context* context, char* message)
+int write(file_context* context, char* message)
 {
     fputs(
         message,
         context->file_to_write
         );
+    
+    if (errno != 0){
+        printf("\x1b[33m");
+        perror("In ""write"" funcrion");
+        printf("\x1b[31m");
+        printf("Exception: %s\n", strerror(errno));
+        printf("\x1b[0m");
+      
+        return -1;
+    }
+
+    return 0;
 }
 
-void binary_write(file_context* context, char* message)
+int binary_write(file_context* context, char* message)
 {
     size_t message_length = strlen(message);
 
-    int true_writes = fwrite(
+    fwrite(
         message,
         sizeof(char), 
         message_length, 
         context->binary_file_to_write
         );
+    
+    if (errno != 0){
+        printf("\x1b[33m");
+        perror("In ""binary_write"" function error: ");
+        printf("\x1b[31m");
+        printf("Exception: %s\n", strerror(errno));
+        printf("\x1b[0m");
 
-    printf("%d", true_writes);
+        return -1;
+    }
+
+    return 0;
 }
 
-void add_path(file_context* context, char* path)
+int add_path(file_context* context, char* path)
 {
     char path_to_text[255];
     strcpy(path_to_text, path);
@@ -42,8 +65,14 @@ void add_path(file_context* context, char* path)
         "a+b"
     );
 
-    if (context->file_to_write == NULL || context->binary_file_to_write == NULL){
-        printf("NOOOO");
+    if (errno != 0){
+        printf("\x1b[31m");
+        printf("Exception: %s\n", strerror(errno));
+        printf("\x1b[0m");
+
+        return -1;
     }
+
+    return 0;
 }
 
