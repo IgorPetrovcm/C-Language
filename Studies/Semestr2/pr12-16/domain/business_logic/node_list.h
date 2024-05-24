@@ -1,20 +1,22 @@
 # ifndef NODE_LIST
 # define NODE_LIST
 
-typedef struct node {
-    void* value;
-    struct node* next; 
-} node;
+# include "node.h"
 
 typedef struct node_list{
     node* head;
     node* tail;
     int count;
 
-    void (*add) (struct node_list* list, void* value);
+    void (*add) (void*);
 } node_list;
 
-void add(node_list* list, void* value);
+typedef struct node_list_meta{
+    node_list* list;
+    void* value;
+} node_list_meta;
+
+void add(void*);
 
 # define INIT_NODE_LIST {.head = NULL, .tail = NULL, .add = add}
 

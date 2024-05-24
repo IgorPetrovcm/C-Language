@@ -14,13 +14,15 @@ void logging_current_time()
     printf("logging: %d:%d:%d", current_time->tm_hour, current_time->tm_min, current_time->tm_sec);
 }
 
-void register_log(logging* logging, void (*log)(log_settings *, char*))
+void register_log(void* meta)
 {    
-    logging->logs_count++;
+    logging_register_log_meta* single_meta = (logging_register_log_meta*)meta;
 
-    logging->logs_output = realloc( logging->logs_output, logging->logs_count * sizeof(log_output));
+    single_meta->logging->logs_count++;
 
-    logging->logs_output[ logging->logs_count - 1 ] = log;
+    single_meta->logging->logs_output = realloc( single_meta->logging->logs_output, single_meta->logging->logs_count * sizeof(log_output));
+
+    single_meta->logging->logs_output[ single_meta->logging->logs_count - 1 ] = single_meta->log;
 }
 
 void logging_console(log_settings* setting, char* information)
@@ -55,15 +57,17 @@ void logging_binary_file(log_settings* setting, char* information)
     printf("\033[0;37m");
 }
 
-int launch(logging* logging, char* information)
+int launch(void* meta)
 {
-    for (int i = 0; i < logging->logs_count; i++)
+    logging_launch_meta* single_meta = (logging_launch_meta*)meta;
+
+    for (int i = 0; i < single_meta->logging->logs_count; i++)
     {
-        logging->logs_output [i]( logging->settings, information );
+        single_meta->logging->logs_output [i]( single_meta->logging->settings, single_meta->information );
     }
 
-    fclose( logging->settings->context->binary_file_to_write );
-    fclose( logging->settings->context->file_to_write );
+    fclose( single_meta->logging->settings->context->file_to_write );
+    fclose( single_meta->logging->settings->context->binary_file_to_write );
 
     if (errno != 0){
         printf("\x1b[33m");
@@ -73,6 +77,8 @@ int launch(logging* logging, char* information)
         printf("\x1b[0m");
 
         return -1;
-    }    
+    } 
+
+    return 0;   
 
 }

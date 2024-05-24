@@ -3,24 +3,26 @@
 # include <stdio.h>
 # include "stdlib.h"
 
-void add(node_list* list, void* value )
+void add( void* meta )
 {
+    node_list_meta* first_meta = (node_list_meta*)meta;
+
     node* user_node = (node*)malloc(sizeof(node));
 
-    user_node->value = value;
+    user_node->value = first_meta->value;
 
-    if (list->head == NULL){
-        list->head = user_node;
+    if (first_meta->list->head == NULL){
+        first_meta->list->head = user_node;
 
-        list->tail = user_node;
+        first_meta->list->tail = user_node;
     }
     else{
-        list->tail->next = user_node;
+        first_meta->list->tail->next = user_node;
 
-        list->tail = user_node;
+        first_meta->list->tail = user_node;
 
-        struct student* temp = list->head->value;
+        struct student* temp = first_meta->list->head->value;
     }
 
-    list->count++;
+    first_meta->list->count++;
 }

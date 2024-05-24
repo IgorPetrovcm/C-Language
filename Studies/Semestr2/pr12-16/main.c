@@ -1,4 +1,5 @@
 # include "domain/business_logic/file_context.h"
+#include "domain/business_logic/node.h"
 # include "domain/model/student.h"
 # include "domain/business_logic/logging.h"
 # include "domain/business_logic/node_list.h"
@@ -33,9 +34,18 @@ int main()
         return -1;
     }
 
-    logging->register_log(logging, logging_console);
-    logging->register_log(logging, logging_text_file);
-    logging->register_log(logging, logging_binary_file);
+    logging_register_log_meta* logging_register_meta = (logging_register_log_meta*)malloc(sizeof(logging_register_log_meta));
+    logging_register_meta->logging = logging;
+
+
+    logging_register_meta->log = logging_console; 
+    logging->register_log(logging_register_meta);
+
+    logging_register_meta->log = logging_text_file;
+    logging->register_log(logging_register_meta);
+
+    logging_register_meta->log = logging_binary_file;
+    logging->register_log(logging_register_meta);
 
     char* groups[ GROUPS_COUNT];
 
@@ -44,7 +54,11 @@ int main()
         groups[i] = get_word((int)GROUP_NAME_COUNT);
     }
 
-    node_list students = INIT_NODE_LIST;
+    node_list students = INIT_NODE_LIST;\
+
+    node_list_meta* meta_students = (node_list_meta*)malloc(sizeof(node_list_meta));
+    meta_students->list = &students;
+
 
     for (int i = 0; i < 100; i++)
     {
@@ -62,8 +76,9 @@ int main()
         rnd_student->chemistry_score = 2 + rand() % 4;
         rnd_student->physics_score = 2 + rand() % 4;
 
-        students.add(&students, rnd_student);
+        meta_students->value = rnd_student;
 
+        students.add(meta_students);
         // printf("%s\t%s\t%c\t%s\t%d\t%d\n", rnd_student->last_name, rnd_student->first_name, rnd_student->gender, rnd_student->group, rnd_student->math_score, rnd_student->chemistry_score);
     }
 
@@ -72,6 +87,9 @@ int main()
     node_list* new_sorted = malloc(sizeof(node_list));
     *new_sorted = sorted_students;
 
+    node_list_meta* meta_sorted_students = (node_list_meta*)malloc(sizeof(node_list_meta));
+    meta_sorted_students->list = new_sorted;
+
     node* student = students.head;
 
     while (student != NULL)
@@ -79,7 +97,8 @@ int main()
         struct student* current = student->value;
 
         if (current->chemistry_score == 5 && current->gender == genders[0] ){
-            new_sorted->add(new_sorted, current);
+            meta_sorted_students->value = current;
+            new_sorted->add(meta_sorted_students);
         }
         student = student->next;
     }
@@ -87,8 +106,6 @@ int main()
     char record[255];
 
     student = new_sorted->head;
-
-    // strcpy(record, "\n");
 
     while (student != NULL) 
     {
@@ -102,11 +119,11 @@ int main()
             strcat(record, "\t");
         strcat(record, current->group);
             strcat(record, "\t");
-        strcat(record, number_to_string(current->math_score));
-            strcat(record, "\t");
-        strcat(record, number_to_string(current->physics_score));
-            strcat(record, "\t");
-        strcat(record, number_to_string(current->chemistry_score));
+        // strcat(record, number_to_string(current->math_score));
+        //     strcat(record, "\t");
+        // strcat(record, number_to_string(current->physics_score));
+        //     strcat(record, "\t");
+        // strcat(record, number_to_string(current->chemistry_score));
 
         strcat(record, "\n");
 
@@ -115,7 +132,11 @@ int main()
         student = student->next;
     }
 
-    logging->launch(logging, record);
+    logging_launch_meta* launch_meta = (logging_launch_meta*)malloc(sizeof(logging_launch_meta));
+    launch_meta->logging = logging;
+    launch_meta->information = record;
+
+    logging->launch(launch_meta);
 
     return 0;
 }
