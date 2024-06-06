@@ -1,4 +1,6 @@
 # include "../Core/Application/logging.h"
+# include "../Core/Application/node_list.h"
+# include "../Core/Domain/student.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <time.h>
@@ -83,7 +85,7 @@ int launch( universal_pointer* value )
     }
 
     fclose( logging->settings->context->file_to_write );
-    fclose( logging->settings->context->binary_file_to_write );
+    // fclose( logging->settings->context->binary_file_to_write );
 
     if (errno != 0){
         printf("\x1b[33m");
@@ -97,4 +99,27 @@ int launch( universal_pointer* value )
 
     return 0;
 
+}
+
+void write_structure( universal_pointer* value ) {
+    file_context* context = value->object;
+
+    node_list* students = (node_list*)value->value;
+
+    node* node = students->head;
+
+    while (node != NULL){
+        student* student = (struct student*)node->value;
+
+        int size_struct_student = sizeof(struct student);
+
+        char* struct_pointer = (char*)student;
+        for ( int j = 0; j < size_struct_student; j++ ) {
+            putc( *struct_pointer++, context->binary_file_to_write );
+        }
+
+        node = node->next;
+    }
+
+    fclose( context->binary_file_to_write );
 }

@@ -20,4 +20,6 @@ void add( universal_pointer* value ) {
         list->tail->next = node;
         list->tail = node;
     }
+
+    list->count++;
 }

@@ -9,6 +9,8 @@ typedef struct node {
 } node;
 
 typedef struct node_list {
+    int count;
+
     node* head;
     node* tail;
 

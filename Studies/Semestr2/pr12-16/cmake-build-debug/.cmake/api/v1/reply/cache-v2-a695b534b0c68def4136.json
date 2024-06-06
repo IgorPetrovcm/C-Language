@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/igr42cm/Programming/C-Language/Studies/Semestr2/pr12-16_3/cmake-build-debug"
+			"value" : "/home/igr42cm/Programming/C-Language/Studies/Semestr2/pr12-16/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -415,7 +415,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/igr42cm/Programming/C-Language/Studies/Semestr2/pr12-16_3/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "/home/igr42cm/Programming/C-Language/Studies/Semestr2/pr12-16/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -475,7 +475,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/igr42cm/Programming/C-Language/Studies/Semestr2/pr12-16_3"
+			"value" : "/home/igr42cm/Programming/C-Language/Studies/Semestr2/pr12-16"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1035,7 +1035,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/igr42cm/Programming/C-Language/Studies/Semestr2/pr12-16_3/cmake-build-debug"
+			"value" : "/home/igr42cm/Programming/C-Language/Studies/Semestr2/pr12-16/cmake-build-debug"
 		},
 		{
 			"name" : "pr12_16_3_IS_TOP_LEVEL",
@@ -1059,7 +1059,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/igr42cm/Programming/C-Language/Studies/Semestr2/pr12-16_3"
+			"value" : "/home/igr42cm/Programming/C-Language/Studies/Semestr2/pr12-16"
 		}
 	],
 	"kind" : "cache",

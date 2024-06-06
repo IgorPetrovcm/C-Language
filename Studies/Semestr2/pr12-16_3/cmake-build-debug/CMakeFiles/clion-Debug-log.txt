@@ -1,1 +1,0 @@
-CMakeLists.txt not found in /home/igr42cm/Programming/C-Language/Studies/Semestr2/pr12-16_3 Select CMakeLists.txt

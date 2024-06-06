@@ -45,8 +45,8 @@ int main() {
     logging_register_meta->value = logging_text_file;
     logging->register_log(logging_register_meta);
 
-    logging_register_meta->value = logging_binary_file;
-    logging->register_log(logging_register_meta);
+    // logging_register_meta->value = logging_binary_file;
+    // logging->register_log(logging_register_meta);
 
     char* groups[ GROUPS_COUNT];
 
@@ -126,7 +126,7 @@ int main() {
 
         strcat(record, "\n");
 
-        free(current);
+        // free(current);
 
         student = student->next;
     }
@@ -136,6 +136,12 @@ int main() {
     universal_pointer* meta_launch = (universal_pointer*)malloc(sizeof(universal_pointer));
     meta_launch->object = logging;
     meta_launch->value = record;
+
+    universal_pointer* meta_bin_write = (universal_pointer*)malloc(sizeof(universal_pointer));
+    meta_bin_write->object = &in_stack_context;
+    meta_bin_write->value = new_sorted;
+
+    logging->write_structure( meta_bin_write );
 
     logging->launch(meta_launch);
 

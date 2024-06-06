@@ -13,4 +13,6 @@ add_executable(pr12_16_3 main.c
         Core/Application/logging.h
         Services/logging.c
         tools/tools.h
-        tools/tools.c)
+        tools/tools.c
+        Core/Application/reads_log.h
+        Services/reads_log.c)

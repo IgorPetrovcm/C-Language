@@ -25,6 +25,8 @@ typedef struct logging{
 
     int (*launch) ( universal_pointer* value );
 
+    void (*write_structure) ( universal_pointer* value );
+
 } logging;
 
 void logging_current_time ();
@@ -36,6 +38,8 @@ void logging_console( universal_pointer* value );
 void logging_text_file( universal_pointer* value );
 void logging_binary_file( universal_pointer* value );
 
-# define INIT_LOGGING {.register_log = register_log, .logging_current_time = logging_current_time, .launch = launch}
+void write_structure( universal_pointer* value );
+
+# define INIT_LOGGING {.register_log = register_log, .logging_current_time = logging_current_time, .launch = launch, .write_structure = write_structure}
 
 #endif //LOGGING_H
